@@ -49,6 +49,8 @@ jobs:
       - name: Generate CommonAPI code
         run: |
           wget https://github.com/COVESA/capicxx-core-tools/releases/download/3.2.0.1/commonapi_core_generator.zip
-          unzip commonapi_core_generator.zip core-generator
+          unzip commonapi_core_generator.zip -d core-generator
           cd core-generator
           ls -al
+          commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d src-gen/core
+          ls -R src-gen/*
