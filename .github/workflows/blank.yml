@@ -57,11 +57,13 @@ jobs:
 
       - name: Generate CommonAPI Code
         run: |
-          echo $(find . -type f -name *.fidl)
-          ${{ github.workspace }}/core-generator/commonapi-core-generator-linux-x86_64 -sk $(find . -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
+          echo $(find ${{ github.workspace }} -type f -name *.fidl)
+          core-generator/commonapi-core-generator-linux-x86_64 -sk $(find ${{ github.workspace }} -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
 
       - name: Save Changes
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          git add src-gen && git commit -m "Auto Generated fidl" && git push
+          git add src-gen
+          git commit -m "Auto Generated fidl"
+          git push
