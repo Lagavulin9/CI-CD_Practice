@@ -57,8 +57,8 @@ jobs:
 
       - name: Generate CommonAPI Code
         run: |
-          echo $(find ${{ github.workspace }} -type f -name *.fidl)
-          core-generator/commonapi-core-generator-linux-x86_64 -sk $(find ${{ github.workspace }} -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
+          echo $(find ${{ github.workspace }} -type f -name '*.fidl')
+          core-generator/commonapi-core-generator-linux-x86_64 -sk $(find ${{ github.workspace }} -type f -name '*.fidl') -d ${{ github.workspace }}/src-gen/core
 
       - name: Save Changes
         run: |
