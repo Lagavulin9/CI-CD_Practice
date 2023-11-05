@@ -51,12 +51,13 @@ jobs:
           wget https://github.com/COVESA/capicxx-core-tools/releases/download/3.2.0.1/commonapi_core_generator.zip
           unzip commonapi_core_generator.zip -d core-generator
           cd core-generator
-          ./commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d ~/src-gen/core
+          ./commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d workspace/src-gen/core
+          pwd
           
       - name: Save Changes
         run: |
+          cd workspace
           pwd
-          cd ~
           git add src-gen
           git commit -m "Auto Generated fidl"
           git push
