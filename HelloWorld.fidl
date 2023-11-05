@@ -11,4 +11,13 @@ interface E01HelloWorld {
             String message
         }
     }
+
+    method sayBye {
+        in {
+            String name
+        }
+        out {
+            String message
+        }
+    }
 }
