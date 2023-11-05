@@ -52,5 +52,5 @@ jobs:
           unzip commonapi_core_generator.zip -d core-generator
           cd core-generator
           ls -al
-          commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d src-gen/core
+          ./commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d src-gen/core
           ls -R src-gen/*
