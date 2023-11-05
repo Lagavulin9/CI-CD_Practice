@@ -39,29 +39,28 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - name: Install CommonAPI
-        run: |
-          git clone https://github.com/COVESA/capicxx-core-runtime.git
-          cd capicxx-core-runtime
-          mkdir build
-          cd build
-          cmake ..
-          make -j $(nproc)
-          sudo make install
-          sudo ldconfig -p | grep common
+      # - name: Install CommonAPI
+      #   run: |
+      #     git clone https://github.com/COVESA/capicxx-core-runtime.git
+      #     cd capicxx-core-runtime
+      #     mkdir build
+      #     cd build
+      #     cmake ..
+      #     make -j $(nproc)
+      #     sudo make install
+      #     sudo ldconfig -p | grep common
 
-      - name: Generate CommonAPI code
+      - name: Download CommonAPI Generator
         run: |
           wget https://github.com/COVESA/capicxx-core-tools/releases/download/3.2.0.1/commonapi_core_generator.zip
-          unzip commonapi_core_generator.zip -d core-generator
-          cd core-generator
-          ./commonapi-core-generator-linux-x86_64 -sk ../*.fidl -d ${{ github.workspace }}/src-gen/core
-          pwd
-          
+          unzip commonapi_core_generator.zip -d {{ github.workspace }}/core-generator
+
+      - name: Generate CommonAPI Code
+        run: |
+          {{ github.workspace }}/core-generator/commonapi-core-generator-linux-x86_64 -sk $(find -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
+
       - name: Save Changes
         run: |
-          pwd
-          cd ${{ github.workspace }}
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git add src-gen
