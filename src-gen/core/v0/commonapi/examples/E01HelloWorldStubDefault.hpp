@@ -67,6 +67,12 @@ public:
         std::string message = "";
         _reply(message);
     }
+    COMMONAPI_EXPORT virtual void sayBye(const std::shared_ptr<CommonAPI::ClientId> _client, std::string _name, sayByeReply_t _reply) {
+        (void)_client;
+        (void)_name;
+        std::string message = "";
+        _reply(message);
+    }
 
 
 protected:

@@ -39,9 +39,12 @@ class E01HelloWorldProxyBase
 public:
 
     typedef std::function<void(const CommonAPI::CallStatus&, const std::string&)> SayHelloAsyncCallback;
+    typedef std::function<void(const CommonAPI::CallStatus&, const std::string&)> SayByeAsyncCallback;
 
     virtual void sayHello(std::string _name, CommonAPI::CallStatus &_internalCallStatus, std::string &_message, const CommonAPI::CallInfo *_info = nullptr) = 0;
     virtual std::future<CommonAPI::CallStatus> sayHelloAsync(const std::string &_name, SayHelloAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr) = 0;
+    virtual void sayBye(std::string _name, CommonAPI::CallStatus &_internalCallStatus, std::string &_message, const CommonAPI::CallInfo *_info = nullptr) = 0;
+    virtual std::future<CommonAPI::CallStatus> sayByeAsync(const std::string &_name, SayByeAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr) = 0;
 
     virtual std::future<void> getCompletionFuture() = 0;
 };
