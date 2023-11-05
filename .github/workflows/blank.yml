@@ -53,11 +53,11 @@ jobs:
       - name: Download CommonAPI Generator
         run: |
           wget https://github.com/COVESA/capicxx-core-tools/releases/download/3.2.0.1/commonapi_core_generator.zip
-          unzip commonapi_core_generator.zip -d {{ github.workspace }}/core-generator
+          unzip commonapi_core_generator.zip -d ${{ github.workspace }}/core-generator
 
       - name: Generate CommonAPI Code
         run: |
-          {{ github.workspace }}/core-generator/commonapi-core-generator-linux-x86_64 -sk $(find -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
+          ${{ github.workspace }}/core-generator/commonapi-core-generator-linux-x86_64 -sk $(find -type f -name *.fidl) -d ${{ github.workspace }}/src-gen/core
 
       - name: Save Changes
         run: |
