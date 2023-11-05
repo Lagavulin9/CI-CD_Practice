@@ -58,6 +58,8 @@ jobs:
         run: |
           pwd
           cd ${{ github.workspace }}
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git add src-gen
           git commit -m "Auto Generated fidl"
           git push
