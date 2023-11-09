@@ -1,14 +1,7 @@
-package commonapi.examples
+package DES_Head-Unit.SpeedSensor
 
-interface E01ByebyeWorld {
+interface SpeedSensor {
     version { major 1 minor 0 }
 
-    method sayHello {
-        in {
-            String name
-        }
-        out {
-            String message
-        }
-    }
+    attribute int speed;
 }
