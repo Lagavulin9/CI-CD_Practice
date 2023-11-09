@@ -39,17 +39,6 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      # - name: Install CommonAPI
-      #   run: |
-      #     git clone https://github.com/COVESA/capicxx-core-runtime.git
-      #     cd capicxx-core-runtime
-      #     mkdir build
-      #     cd build
-      #     cmake ..
-      #     make -j $(nproc)
-      #     sudo make install
-      #     sudo ldconfig -p | grep common
-
       - name: Download CommonAPI Generator
         run: |
           wget https://github.com/COVESA/capicxx-core-tools/releases/download/3.2.0.1/commonapi_core_generator.zip
