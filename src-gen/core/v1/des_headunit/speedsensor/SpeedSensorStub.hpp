@@ -49,6 +49,8 @@ class SpeedSensorStubAdapter
  public:
     ///Notifies all remote listeners about a change of value of the attribute speed.
     virtual void fireSpeedAttributeChanged(const int32_t &speed) = 0;
+    ///Notifies all remote listeners about a change of value of the attribute rpm.
+    virtual void fireRpmAttributeChanged(const int32_t &rpm) = 0;
 
 
     virtual void deactivateManagedInstances() = 0;
@@ -60,6 +62,13 @@ class SpeedSensorStubAdapter
             speedMutex_.unlock();
         }
     }
+    void lockRpmAttribute(bool _lockAccess) {
+        if (_lockAccess) {
+            rpmMutex_.lock();
+        } else {
+            rpmMutex_.unlock();
+        }
+    }
 
 protected:
     /**
@@ -67,6 +76,7 @@ protected:
      * subscribed to the selective broadcasts
      */
     std::recursive_mutex speedMutex_;
+    std::recursive_mutex rpmMutex_;
 
 };
 
@@ -91,6 +101,10 @@ public:
     virtual bool onRemoteSetSpeedAttribute(const std::shared_ptr<CommonAPI::ClientId> _client, int32_t _value) = 0;
     /// Action callback for remote set requests on the attribute speed
     virtual void onRemoteSpeedAttributeChanged() = 0;
+    /// Verification callback for remote set requests on the attribute rpm
+    virtual bool onRemoteSetRpmAttribute(const std::shared_ptr<CommonAPI::ClientId> _client, int32_t _value) = 0;
+    /// Action callback for remote set requests on the attribute rpm
+    virtual void onRemoteRpmAttributeChanged() = 0;
 };
 
 /**
@@ -107,7 +121,7 @@ public:
     virtual ~SpeedSensorStub() {}
     void lockInterfaceVersionAttribute(bool _lockAccess) { static_cast<void>(_lockAccess); }
     bool hasElement(const uint32_t _id) const {
-        return (_id < 1);
+        return (_id < 2);
     }
     virtual const CommonAPI::Version& getInterfaceVersion(std::shared_ptr<CommonAPI::ClientId> _client) = 0;
 
@@ -123,6 +137,19 @@ public:
         auto stubAdapter = CommonAPI::Stub<SpeedSensorStubAdapter, SpeedSensorStubRemoteEvent>::stubAdapter_.lock();
         if (stubAdapter)
             stubAdapter->lockSpeedAttribute(_lockAccess);
+    }
+    /// Provides getter access to the attribute rpm
+    virtual const int32_t &getRpmAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
+    /// sets attribute with the given value and propagates it to the adapter
+    virtual void fireRpmAttributeChanged(int32_t _value) {
+    auto stubAdapter = CommonAPI::Stub<SpeedSensorStubAdapter, SpeedSensorStubRemoteEvent>::stubAdapter_.lock();
+    if (stubAdapter)
+        stubAdapter->fireRpmAttributeChanged(_value);
+    }
+    void lockRpmAttribute(bool _lockAccess) {
+        auto stubAdapter = CommonAPI::Stub<SpeedSensorStubAdapter, SpeedSensorStubRemoteEvent>::stubAdapter_.lock();
+        if (stubAdapter)
+            stubAdapter->lockRpmAttribute(_lockAccess);
     }
 
 

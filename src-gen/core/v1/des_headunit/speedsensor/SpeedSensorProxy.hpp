@@ -77,6 +77,12 @@ public:
     virtual SpeedAttribute& getSpeedAttribute() {
         return delegate_->getSpeedAttribute();
     }
+    /**
+     * Returns the wrapper class that provides access to the attribute rpm.
+     */
+    virtual RpmAttribute& getRpmAttribute() {
+        return delegate_->getRpmAttribute();
+    }
 
 
 
@@ -99,6 +105,25 @@ namespace SpeedSensorExtensions {
         }
     
         inline extension_type& getSpeedAttributeExtension() {
+            return attributeExtension_;
+        }
+    
+     private:
+        extension_type attributeExtension_;
+    };
+
+    template <template <typename > class _ExtensionType>
+    class RpmAttributeExtension {
+     public:
+        typedef _ExtensionType< SpeedSensorProxyBase::RpmAttribute> extension_type;
+    
+        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SpeedSensorProxyBase::RpmAttribute>, extension_type>::value,
+                      "Not CommonAPI Attribute Extension!");
+    
+        RpmAttributeExtension(SpeedSensorProxyBase& proxy): attributeExtension_(proxy.getRpmAttribute()) {
+        }
+    
+        inline extension_type& getRpmAttributeExtension() {
             return attributeExtension_;
         }
     
@@ -162,7 +187,8 @@ template<template<typename > class _AttributeExtension>
 struct DefaultAttributeProxyHelper< ::v1::des_headunit::speedsensor::SpeedSensorProxy,
     _AttributeExtension> {
     typedef typename ::v1::des_headunit::speedsensor::SpeedSensorProxy<
-            ::v1::des_headunit::speedsensor::SpeedSensorExtensions::SpeedAttributeExtension<_AttributeExtension>
+            ::v1::des_headunit::speedsensor::SpeedSensorExtensions::SpeedAttributeExtension<_AttributeExtension>, 
+            ::v1::des_headunit::speedsensor::SpeedSensorExtensions::RpmAttributeExtension<_AttributeExtension>
     > class_t;
 };
 }
